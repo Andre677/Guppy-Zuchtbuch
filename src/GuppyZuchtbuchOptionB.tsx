@@ -742,9 +742,10 @@ function ZuchtjournalTab(props: {
     if (!selected) return [];
     return props.log
       .filter((e) => e.attemptId === selected.id)
+      .filter((e) => !logFilterTankId || (e.tankId || "") === logFilterTankId)
       .slice()
       .sort((a, b) => (a.date < b.date ? 1 : -1));
-  }, [props.log, selected]);
+  }, [props.log, selected, logFilterTankId]);
 
   // quick group
   const [gName, setGName] = useState("Gruppe");
@@ -759,12 +760,17 @@ function ZuchtjournalTab(props: {
   }, [selectedId]);
 
   // quick log
+  const [logFilterTankId, setLogFilterTankId] = useState("");
   const [lDate, setLDate] = useState(toISODate(new Date()));
   const [lKind, setLKind] = useState<LogEntry["kind"]>("Pflege");
   const [lTankId, setLTankId] = useState("");
   const [lTitle, setLTitle] = useState("Wasserwechsel");
   const [lNotes, setLNotes] = useState("");
 
+useEffect(() => {
+  setLogFilterTankId("");
+  }, [selectedId]);
+  
   useEffect(() => {
     setLTankId("");
   }, [selectedId]);
@@ -989,6 +995,20 @@ function ZuchtjournalTab(props: {
                 </CardX>
 
                 <CardX title="Logbuch" subtitle="Einträge zum Ansatz (optional Becken)">
+                  <div className="mb-2">
+                    <select
+                      value={logFilterTankId}
+                      onChange={(e) => setLogFilterTankId(e.target.value)}
+                      className="w-full rounded-2xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                      >
+                      <option value="">alle</option>
+                      {selected?.tankIds.map((id) => (
+                        <option key={id} value={id}>
+                          {props.tanksById[id]?.name || "–"}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   <div className="mb-2">
                     <select
                       value={lTankId}
