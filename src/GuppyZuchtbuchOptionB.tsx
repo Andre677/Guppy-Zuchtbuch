@@ -989,6 +989,20 @@ function ZuchtjournalTab(props: {
                 </CardX>
 
                 <CardX title="Logbuch" subtitle="Einträge zum Ansatz (optional Becken)">
+                  <div className="mb-2">
+                    <select
+                      value={lTankId}
+                      onChange={(e) => setLTankId(e.target.value)}
+                      className="w-full rounded-2xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                      >
+                      <option value="">Alle Becken</option>
+                      {selected?.tankIds.map((id) => (
+                        <option key={id} value={id}>
+                          {props.tanksById[id]?.name || "–"}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   <div className="space-y-2">
                     {logForAttempt.length ? (
                       logForAttempt.slice(0, 30).map((e) => (
