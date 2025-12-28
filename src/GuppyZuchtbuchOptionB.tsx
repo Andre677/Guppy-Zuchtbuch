@@ -913,7 +913,7 @@ useEffect(() => {
               <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-3">
                 <div className="text-sm font-semibold">Becken im Ansatz</div>
                 <div className="text-sm text-neutral-700 mt-2 flex flex-wrap gap-2">
-                  {selected.tankIds.map((id) => (
+                  {selected?.tankIds?.map((id) => (
                     <span key={id} className="rounded-2xl border bg-white px-3 py-1 text-sm">
                       {props.tanksById[id]?.name || "–"}
                     </span>
@@ -953,7 +953,7 @@ useEffect(() => {
                     <div className="mt-2 space-y-2">
                       <InputX value={gName} onChange={(e) => setGName(e.target.value)} />
                       <select value={gTankId} onChange={(e) => setGTankId(e.target.value)} className="w-full rounded-2xl border border-neutral-200 bg-white px-3 py-2 text-sm">
-                        {selected.tankIds.map((id) => (
+                        {selected?.tankIds?.map((id) => (
                           <option key={id} value={id}>
                             {props.tanksById[id]?.name || "–"}
                           </option>
@@ -1064,7 +1064,7 @@ useEffect(() => {
                       </div>
                       <select value={lTankId} onChange={(e) => setLTankId(e.target.value)} className="w-full rounded-2xl border border-neutral-200 bg-white px-3 py-2 text-sm">
                         <option value="">allgemein (kein Becken)</option>
-                        {selected.tankIds.map((id) => (
+                        {selected?.tankIds?.map((id) => (
                           <option key={id} value={id}>
                             {props.tanksById[id]?.name || "–"}
                           </option>
