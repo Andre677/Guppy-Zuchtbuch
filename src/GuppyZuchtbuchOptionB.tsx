@@ -710,7 +710,6 @@ function ZuchtjournalTab(props: {
   }, [selectedId, props.attempts]);
 
   const selected = selectedId ? props.attempts.find((a) => a.id === selectedId) || null : null;
-  const [logFilterTankId, setLogFilterTankId] = useState("");
 
   // attempt editor
   const [editOpen, setEditOpen] = useState(false);
@@ -741,12 +740,11 @@ function ZuchtjournalTab(props: {
 
   const logForAttempt = useMemo(() => {
     if (!selected) return [];
-    return props.logs
+    return props.log
       .filter((e) => e.attemptId === selected.id)
-      .filter((e) => !logFilterTankId || (e.tankId || "") === logFilterTankId)
       .slice()
       .sort((a, b) => (a.date < b.date ? 1 : -1));
-  }, [props.logs, selected, logFilterTankId]);
+  }, [props.log, selected]);
 
   // quick group
   const [gName, setGName] = useState("Gruppe");
@@ -767,10 +765,6 @@ function ZuchtjournalTab(props: {
   const [lTitle, setLTitle] = useState("Wasserwechsel");
   const [lNotes, setLNotes] = useState("");
 
-useEffect(() => {
-  setLogFilterTankId("");
-  }, [selectedId]);
-  
   useEffect(() => {
     setLTankId("");
   }, [selectedId]);
@@ -913,7 +907,7 @@ useEffect(() => {
               <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-3">
                 <div className="text-sm font-semibold">Becken im Ansatz</div>
                 <div className="text-sm text-neutral-700 mt-2 flex flex-wrap gap-2">
-                  {selected?.tankIds?.map((id) => (
+                  {selected.tankIds.map((id) => (
                     <span key={id} className="rounded-2xl border bg-white px-3 py-1 text-sm">
                       {props.tanksById[id]?.name || "–"}
                     </span>
@@ -953,23 +947,16 @@ useEffect(() => {
                     <div className="mt-2 space-y-2">
                       <InputX value={gName} onChange={(e) => setGName(e.target.value)} />
                       <select value={gTankId} onChange={(e) => setGTankId(e.target.value)} className="w-full rounded-2xl border border-neutral-200 bg-white px-3 py-2 text-sm">
-                        {selected?.tankIds?.map((id) => (
+                        {selected.tankIds.map((id) => (
                           <option key={id} value={id}>
                             {props.tanksById[id]?.name || "–"}
                           </option>
                         ))}
                       </select>
                       <div className="grid grid-cols-2 gap-2">
-                        <div>
-                        <div className="text-xs text-neutral-500 mb-1">♂ Männlich</div>
-                        <InputX type="number" value={gM} onChange={(e) => setGM(e.target.value)} />
+                        <InputX type="number" value={gM} onChange={(e) => setGM(e.target.value)} placeholder="♂" />
+                        <InputX type="number" value={gF} onChange={(e) => setGF(e.target.value)} placeholder="♀" />
                       </div>
-
-                       <div>
-                         <div className="text-xs text-neutral-500 mb-1">♀ Weiblich</div>
-                         <InputX type="number" value={gF} onChange={(e) => setGF(e.target.value)} />
-                         </div>
-                       </div>
                       <InputX value={gNotes} onChange={(e) => setGNotes(e.target.value)} placeholder="Notiz (optional)" />
                       <ButtonX
                         onClick={() => {
@@ -995,34 +982,6 @@ useEffect(() => {
                 </CardX>
 
                 <CardX title="Logbuch" subtitle="Einträge zum Ansatz (optional Becken)">
-                  <div className="mb-2">
-                    <select
-                      value={logFilterTankId}
-                      onChange={(e) => setLogFilterTankId(e.target.value)}
-                      className="w-full rounded-2xl border border-neutral-200 bg-white px-3 py-2 text-sm"
-                      >
-                      <option value="">alle</option>
-                      {selected?.tankIds.map((id) => (
-                        <option key={id} value={id}>
-                          {props.tanksById[id]?.name || "–"}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  <div className="mb-2">
-                    <select
-                      value={lTankId}
-                      onChange={(e) => setLTankId(e.target.value)}
-                      className="w-full rounded-2xl border border-neutral-200 bg-white px-3 py-2 text-sm"
-                      >
-                      <option value="">Alle Becken</option>
-                      {selected?.tankIds.map((id) => (
-                        <option key={id} value={id}>
-                          {props.tanksById[id]?.name || "–"}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
                   <div className="space-y-2">
                     {logForAttempt.length ? (
                       logForAttempt.slice(0, 30).map((e) => (
@@ -1064,7 +1023,7 @@ useEffect(() => {
                       </div>
                       <select value={lTankId} onChange={(e) => setLTankId(e.target.value)} className="w-full rounded-2xl border border-neutral-200 bg-white px-3 py-2 text-sm">
                         <option value="">allgemein (kein Becken)</option>
-                        {selected?.tankIds?.map((id) => (
+                        {selected.tankIds.map((id) => (
                           <option key={id} value={id}>
                             {props.tanksById[id]?.name || "–"}
                           </option>
@@ -1639,7 +1598,7 @@ export default function GuppyZuchtbuchOptionB() {
             lines={state.lines}
             attempts={state.attempts}
             groups={state.groups}
-            log={state.logs}
+            log={state.log}
             tanksById={tanksById}
             linesById={linesById}
             upsertAttempt={upsertAttempt}
