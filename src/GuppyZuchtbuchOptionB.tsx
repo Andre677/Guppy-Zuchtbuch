@@ -738,14 +738,16 @@ function ZuchtjournalTab(props: {
 
   const groupsForAttempt = useMemo(() => (selected ? props.groups.filter((g) => g.attemptId === selected.id && !g.archived) : []), [props.groups, selected]);
 
+  const [logFilterTankId, setLogFilterTankId] = useState("");
+  
   const logForAttempt = useMemo(() => {
     if (!selected) return [];
-    return props.log
+    return props.logs
       .filter((e) => e.attemptId === selected.id)
       .filter((e) => !logFilterTankId || (e.tankId || "") === logFilterTankId)
       .slice()
       .sort((a, b) => (a.date < b.date ? 1 : -1));
-  }, [props.log, selected, logFilterTankId]);
+  }, [props.logs, selected, logFilterTankId]);
 
   // quick group
   const [gName, setGName] = useState("Gruppe");
@@ -760,7 +762,6 @@ function ZuchtjournalTab(props: {
   }, [selectedId]);
 
   // quick log
-  const [logFilterTankId, setLogFilterTankId] = useState("");
   const [lDate, setLDate] = useState(toISODate(new Date()));
   const [lKind, setLKind] = useState<LogEntry["kind"]>("Pflege");
   const [lTankId, setLTankId] = useState("");
