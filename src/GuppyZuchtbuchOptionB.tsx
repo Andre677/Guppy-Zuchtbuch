@@ -710,6 +710,7 @@ function ZuchtjournalTab(props: {
   }, [selectedId, props.attempts]);
 
   const selected = selectedId ? props.attempts.find((a) => a.id === selectedId) || null : null;
+  const [logFilterTankId, setLogFilterTankId] = useState("");
 
   // attempt editor
   const [editOpen, setEditOpen] = useState(false);
@@ -738,8 +739,6 @@ function ZuchtjournalTab(props: {
 
   const groupsForAttempt = useMemo(() => (selected ? props.groups.filter((g) => g.attemptId === selected.id && !g.archived) : []), [props.groups, selected]);
 
-  const [logFilterTankId, setLogFilterTankId] = useState("");
-  
   const logForAttempt = useMemo(() => {
     if (!selected) return [];
     return props.logs
@@ -1640,7 +1639,7 @@ export default function GuppyZuchtbuchOptionB() {
             lines={state.lines}
             attempts={state.attempts}
             groups={state.groups}
-            log={state.log}
+            log={state.logs}
             tanksById={tanksById}
             linesById={linesById}
             upsertAttempt={upsertAttempt}
