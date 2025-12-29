@@ -955,12 +955,16 @@ function ZuchtjournalTab(props: {
                       </select>
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <div className="text-center text-sm text-neutral-500 mb-1 select-none">♂</div>
+                          <div className="text-xs text-neutral-500 mb-1 flex items-center justify-center gap-1 select-none">
+                           <span>♂</span><span>M</span>
+                            </div>
                         <InputX value={gM} onChange={(e) => setGM(e.target.value)} inputMode="numeric" />
                           </div>
 
                         <div>
-                          <div className="text-center text-sm text-neutral-500 mb-1 select-none">♀</div>
+                           <div className="text-xs text-neutral-500 mb-1 flex items-center justify-center gap-1 select-none">
+                             <span>♀</span><span>W</span>
+                             </div>
                         <InputX value={gF} onChange={(e) => setGF(e.target.value)} inputMode="numeric" />
                           </div>
                       </div>
