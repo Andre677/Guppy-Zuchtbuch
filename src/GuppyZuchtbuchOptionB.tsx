@@ -954,8 +954,15 @@ function ZuchtjournalTab(props: {
                         ))}
                       </select>
                       <div className="grid grid-cols-2 gap-2">
-                        <InputX type="number" value={gM} onChange={(e) => setGM(e.target.value)} placeholder="♂" />
-                        <InputX type="number" value={gF} onChange={(e) => setGF(e.target.value)} placeholder="♀" />
+                        <div>
+                          <div className="text-center text-sm text-neutral-500 mb-1 select-none">♂</div>
+                        <InputX value={gM} onChange={(e) => setGM(e.target.value)} inputMode="numeric" />
+                          </div>
+
+                        <div>
+                          <div className="text-center text-sm text-neutral-500 mb-1 select-none">♀</div>
+                        <InputX value={gF} onChange={(e) => setGF(e.target.value)} inputMode="numeric" />
+                          </div>
                       </div>
                       <InputX value={gNotes} onChange={(e) => setGNotes(e.target.value)} placeholder="Notiz (optional)" />
                       <ButtonX
